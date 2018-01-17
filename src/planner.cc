@@ -190,7 +190,11 @@ static float determine_joining_speed(const struct AxisTarget *from,
   const float dot = from->dx*to->dx + from->dy*to->dy + from->dz*to->dz;
   const float mag = from->len * to->len;
   if (dot == 0) return 0.0f;        // orthogonal 90 degree, full stop
-  if (dot == mag) return to->speed; // codirectional 0 degree, keep accelerating
+  //if (dot == mag) return to->speed; // codirectional 0 degree, keep accelerating
+  if (dot == mag) {
+  if(from->len>2.0f && to->len<1.0f) return 0.0f;
+  else return to->speed; // codirectional 0 degree, keep accelerating
+  }
 
   // the angle between the vectors
   const float rad2deg = 180.0 / M_PI;
